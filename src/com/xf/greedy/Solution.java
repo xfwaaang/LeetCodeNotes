@@ -1,15 +1,62 @@
 package com.xf.greedy;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * @author xfwaaang
  * @create 2019-03-26 10:19
  */
 public class Solution {
+
+    public static void main(String[] args) {
+        // write your code here
+        int[][] people = {{7,0}, {4,4}, {7,1}, {5,0}, {6,1}, {5,2}};
+
+        reconstructQueue(people);
+    }
+
+    /**
+     * 406. Queue Reconstruction by Height
+     * pass   17%  80%
+     * 按 h 和 k，从小到大排序people
+     * 遍历people，每次确定一个元素的位置，此元素为当前最小的元素（长度为2的一维数组）
+     * 对于当前最小的元素 [h,k] ，它最终所在位置必须满足的条件为：
+     * 当前情况下，它前面有k个身高大于等于h的元素，即 k = 前方空位个数 + 前方身高等于h元素的个数
+     * 找到距离满足条件位置最近的空位插入
+     * @param people
+     * @return
+     */
+    public static int[][] reconstructQueue(int[][] people) {
+        int[][] res = new int[people.length][2];
+
+        Arrays.sort(people, (a1, a2) -> {
+            if (a1[0] == a2[0]){
+                if (a1[1] == a2[1])     return 0;
+                return a1[1] < a2[1] ? -1 : 1;
+            }else {
+                return a1[0] < a2[0] ? -1 : 1;
+            }
+        });
+
+//        -1代表当前位置为空位
+        for (int i = 0; i < res.length; i++) {
+            res[i][0] = -1;
+        }
+
+        for (int[] person : people) {
+            int k = 0;
+            for (int i=0; i<res.length; i++){
+                if (k == person[1] && res[i][0] == -1){
+                    res[i] = person;
+                    break;
+                }
+                if (res[i][0] == -1 || res[i][0] == person[0])   k++;
+            }
+
+        }
+
+        return res;
+    }
 
     /**
      * 455. Assign Cookies
