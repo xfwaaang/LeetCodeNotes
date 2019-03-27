@@ -8,6 +8,25 @@ import java.util.*;
  */
 public class Solution {
 
+    /**
+     * 94. Binary Tree Inorder Traversal
+     * pass     100%    50%
+     * @param root
+     * @return
+     */
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        inorderTraversalHelper(root, res);
+        return res;
+    }
+
+    private void inorderTraversalHelper(TreeNode root, List<Integer> res) {
+        if (root != null){
+            inorderTraversalHelper(root.left, res);
+            res.add(root.val);
+            inorderTraversalHelper(root.right, res);
+        }
+    }
 
 
     /**
@@ -136,14 +155,80 @@ public class Solution {
     }
 
     /**
+     * 112. Path Sum
+     * pass     100%    68%
+     * @param root
+     * @param sum
+     * @return
+     */
+    public boolean hasPathSum(TreeNode root, int sum) {
+        if (root != null){
+            if (root.left == null && root.right == null && root.val == sum)    return true;
+            return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
+        }
+        return false;
+    }
+
+    /**
+     * 199. Binary Tree Right Side View
+     * pass
+     * @param root
+     * @return
+     */
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        if (root == null)   return list;
+        Queue<TreeNode> help = new LinkedList<>();
+        help.offer(root);
+        while (!help.isEmpty()){
+            for (int i = 0, n = help.size(); i < n; i++) {
+                TreeNode node = help.poll();
+                if (i == 0){
+                    list.add(node.val);
+                }
+
+                if (node.right != null) help.offer(node.right);
+                if (node.left != null)  help.offer(node.left);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 257. Binary Tree Paths
+     * pass
+     * @param root
+     * @return
+     */
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> res = new ArrayList<>();
+        if (root != null)   binaryTreePathsHelper(root, "", res);
+        return res;
+    }
+
+    private void binaryTreePathsHelper(TreeNode root, String path, List<String> res) {
+        if (root.left == null && root.right == null)    res.add(path + root.val);
+        if (root.left != null)  binaryTreePathsHelper(root.left, path + root.val + "->", res);
+        if (root.right != null) binaryTreePathsHelper(root.right, path + root.val + "->", res);
+    }
+
+    /**
      * 437. Path Sum III
-     * todo
+     * pass
+     * 1. 求以根节点为起始的路径个数
+     * 2. 递归求左右子树的满足条件的路径个数
      * @param root
      * @param sum
      * @return
      */
     public int pathSum(TreeNode root, int sum) {
-        return 0;
+        if (root == null)   return 0;
+        return pathSumHelper(root, sum) + pathSum(root.left, sum) + pathSum(root.right, sum);
+    }
+
+    private int pathSumHelper(TreeNode root, int sum) {
+        if (root == null)   return 0;
+        return (root.val == sum ? 1 : 0) + pathSumHelper(root.left, sum - root.val) + pathSumHelper(root.right, sum - root.val);
     }
 
     /**
@@ -263,38 +348,61 @@ public class Solution {
 
     /**
      * 671. Second Minimum Node In a Binary Tree
+     * pass
+     * @param root
+     * @return
+     */
+    int mine;
+    int res = Integer.MAX_VALUE;
+    public int findSecondMinimumValue(TreeNode root) {
+        mine = root.val;
+        findSecondMinimumValueHelper(root);
+        return res < Integer.MAX_VALUE ? res : -1;
+    }
+
+    private void findSecondMinimumValueHelper(TreeNode root) {
+        if (root != null){
+            if (root.val > mine && res > root.val){
+                res = root.val;
+            }else if (root.val == mine){
+                findSecondMinimumValueHelper(root.left);
+                findSecondMinimumValueHelper(root.right);
+            }
+        }
+    }
+
+    /**
+     * 687. Longest Univalue Path
      * todo
      * @param root
      * @return
      */
-    public int findSecondMinimumValue(TreeNode root) {
-        if(root == null)    return  -1;
+    public int longestUnivaluePath(TreeNode root) {
+        return longestUnivaluePathHelper(root);
+    }
 
-        if(root.left != null && root.right != null){
-            if(root.left.val > root.val && root.right.val > root.val){
-                return Math.min(root.left.val, root.right.val);
-            }else if(root.left.val == root.val && root.right.val == root.val){
-                return Math.min(findSecondMinimumValue(root.left), findSecondMinimumValue(root.right));
-            }else {
-               if(root.left.val == root.val){
-                   int t = findSecondMinimumValue(root.left);
-                   if(t == -1){
-                       return root.right.val;
-                   }else {
-                       Math.min(t, root.right.val);
-                   }
-               }else {
-                   int t = findSecondMinimumValue(root.right);
-                   if(t == -1){
-                       return root.left.val;
-                   }else {
-                       Math.min(t, root.left.val);
-                   }
-               }
-            }
+    private int longestUnivaluePathHelper(TreeNode root) {
+        if (root == null)   return 0;
+
+        int len = 0;
+        TreeNode tmp = root.left;
+        while (tmp != null && tmp.val == root.val){
+            System.out.println(tmp.val);
+            len++;
+            tmp = tmp.left;
+        }
+        System.out.println();
+        tmp = root.right;
+        while (tmp != null && tmp.val == root.val){
+            System.out.println(tmp.val);
+            len++;
+            tmp = tmp.right;
         }
 
-        return -1;
+        int left = longestUnivaluePathHelper(root.left);
+        int righ = longestUnivaluePathHelper(root.right);
+
+        return Math.max(len, Math.max(left, righ));
     }
 
     /**
@@ -311,20 +419,6 @@ public class Solution {
      */
     public TreeNode insertIntoBST(TreeNode root, int val) {
         if (root == null)   return null;
-
-//        if (root.left == null && val < root.val){
-//            TreeNode node1 = new TreeNode(val);
-//            root.left = node1;
-//        }else if (root.right == null && val > root.val){
-//            TreeNode node2 = new TreeNode(val);
-//            root.right = node2;
-//        }else {
-//            if (val < root.val){
-//                insertIntoBST(root.left, val);
-//            }else {
-//                insertIntoBST(root.right, val);
-//            }
-//        }
 
         if (val < root.val){
             if (root.left == null){
@@ -373,6 +467,85 @@ public class Solution {
             return pruneTreeHelper(root.left) && pruneTreeHelper(root.right);
         }
         return true;
+    }
+
+    /**
+     * 894. All Possible Full Binary Trees
+     * todo
+     * @param N
+     * @return
+     */
+    public List<TreeNode> allPossibleFBT(int N) {
+        List<TreeNode> res = new ArrayList<>();
+        allPossibleFBTHelper(res, N);
+        return res;
+    }
+
+    private TreeNode allPossibleFBTHelper(List<TreeNode> list, int n) {
+        return null;
+    }
+
+    /**
+     * 951. Flip Equivalent Binary Trees
+     * pass
+     * 1. 判断两棵树根节点的对应的孩子节点是否相等（值相等）
+     * 2. 若不相等，则交换root1的左右孩子节点，若相等，则无需交换
+     * 3. 判断root1和root2的对应子树是否满足flipEquiv，取两者之与
+     * @param root1
+     * @param root2
+     * @return
+     */
+    public boolean flipEquiv(TreeNode root1, TreeNode root2) {
+        if (root1 == null && root2 == null) return true;
+
+        if (root1 != null && root2 != null){
+            if (root1.val != root2.val){
+                return false;
+            }
+            if (!flipEquivHelper(root1, root2)){
+                TreeNode tmp = root1.left;
+                root1.left = root1.right;
+                root1.right = tmp;
+            }
+            return flipEquiv(root1.left, root2.left) && flipEquiv(root1.right, root2.right);
+        }
+
+        return false;
+    }
+
+    /**
+     * 判断孩子节点是否相等
+     * @param root1
+     * @param root2
+     * @return
+     */
+    private boolean flipEquivHelper(TreeNode root1, TreeNode root2) {
+//        if (root1.left != null && root1.right != null){
+//            if (root2.left != null && root2.right != null){
+//                if (root1.left.val == root2.left.val && root1.right.val == root2.right.val){
+//                    return true;
+//                }
+//            }
+//        }else if (root1.left != null && root1.right == null){
+//            if (root2.left != null && root2.right == null){
+//                if (root1.left.val == root2.left.val){
+//                    return true;
+//                }
+//            }
+//        }else if (root1.left == null && root1.right != null){
+//            if (root2.left == null && root2.right != null){
+//                if (root1.right.val == root2.right.val){
+//                    return true;
+//                }
+//            }
+//        }
+
+        int leftv1 = root1.left == null ? -1 : root1.left.val;
+        int righv1 = root1.right == null ? -1 : root1.right.val;
+        int leftv2 = root2.left == null ? -1 : root2.left.val;
+        int righv2 = root2.right == null ? -1 : root2.right.val;
+
+        return leftv1 == leftv2 && righv1 == righv2 ? true : false;
     }
 
     /**
