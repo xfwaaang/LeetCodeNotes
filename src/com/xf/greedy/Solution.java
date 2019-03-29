@@ -87,6 +87,63 @@ public class Solution {
     }
 
     /**
+     * 714. Best Time to Buy and Sell Stock with Transaction Fee
+     * Input: prices = [1, 3, 2, 8, 4, 9], fee = 2
+     * Output: 8
+     * pass 100%  12%
+     * todo     思路
+     * @param prices
+     * @param fee
+     * @return
+     */
+    public int maxProfit(int[] prices, int fee) {
+        int profit = 0, hold = prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            int tmp = prices[i] - hold - fee;
+            if (tmp > 0){
+                profit += tmp;
+                hold = prices[i] - fee;
+            }else {
+                hold = Math.min(hold, prices[i]);
+            }
+        }
+        return profit;
+    }
+
+    /**
+     * 763. Partition Labels
+     * pass  96%    85%
+     * @param S
+     * @return
+     */
+    public List<Integer> partitionLabels(String S) {
+        List<Integer> res = new ArrayList<>();
+
+//        start：子串起始位置，end：子串结束位置
+        int start = 0, end = 0;
+
+        while (end < S.length()){
+//            求出当前子串每个字符在S中出现的最靠后的位置 j
+//            若j > end，则end = j
+            for (int i=start; i<=end; i++){
+//                从后往前找
+                int j = S.length() - 1;
+                while (j > end && S.charAt(i) != S.charAt(j))      j--;
+                end = j;
+            }
+
+            res.add(end - start + 1);
+
+//            更新start和end
+            end += 1;
+            start = end;
+
+        }
+
+        return res;
+    }
+
+    /**
      * 860. Lemonade Change
      * pass
      * @param bills
@@ -168,41 +225,11 @@ public class Solution {
         return res;
     }
 
-    /**
-     * 763. Partition Labels
-     * pass  96%    85%
-     * @param S
-     * @return
-     */
-    public List<Integer> partitionLabels(String S) {
-        List<Integer> res = new ArrayList<>();
 
-//        start：子串起始位置，end：子串结束位置
-        int start = 0, end = 0;
-
-        while (end < S.length()){
-//            求出当前子串每个字符在S中出现的最靠后的位置 j
-//            若j > end，则end = j
-            for (int i=start; i<=end; i++){
-//                从后往前找
-                int j = S.length() - 1;
-                while (j > end && S.charAt(i) != S.charAt(j))      j--;
-                end = j;
-            }
-
-            res.add(end - start + 1);
-
-//            更新start和end
-            end += 1;
-            start = end;
-
-        }
-
-        return res;
-    }
 
     /**
      * 921. Minimum Add to Make Parentheses Valid
+     * pass
      * @param S
      * @return
      */
@@ -230,6 +257,7 @@ public class Solution {
 
     /**
      * 1005. Maximize Sum Of Array After K Negations
+     * pass
      * @param A
      * @param K
      * @return
