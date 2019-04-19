@@ -5,14 +5,27 @@ import java.util.*;
 /**
  * @author xfwaaang
  * @create 2019-03-26 10:19
+ * 贪心
  */
 public class Solution {
 
-    public static void main(String[] args) {
-        // write your code here
-        int[][] people = {{7,0}, {4,4}, {7,1}, {5,0}, {6,1}, {5,2}};
 
-        reconstructQueue(people);
+    /**
+     * 392. Is Subsequence
+     * pass     78%     93%
+     * 遍历s，若s中的某个字符不能在t的剩余字符中找到，则返回false
+     * @param s
+     * @param t
+     * @return
+     */
+    public boolean isSubsequence(String s, String t) {
+        int k = 0;
+        for (int i=0; i<s.length(); i++){
+            while (k < t.length() && t.charAt(k) != s.charAt(i))    k++;
+            if (k == t.length())    return false;
+            k++;
+        }
+        return true;
     }
 
     /**
@@ -59,6 +72,37 @@ public class Solution {
     }
 
     /**
+     * 435. Non-overlapping Intervals
+     * pass  42%   97%
+     * @param intervals
+     * @return
+     */
+    public int eraseOverlapIntervals(Interval[] intervals) {
+        if (intervals.length == 0)  return 0;
+
+        Arrays.sort(intervals,(a1, a2) -> {
+            if (a1.end == a2.end){
+                return 0;
+            }else {
+                return a1.end < a2.end ? -1 : 1;
+            }
+        });
+
+        int pos = intervals[0].end;
+        int res = 0;
+
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i].start < pos){
+                res++;
+            }else {
+                pos = intervals[i].end;
+            }
+        }
+
+        return res;
+    }
+
+    /**
      * 455. Assign Cookies
      * pass
      * @param g
@@ -87,6 +131,52 @@ public class Solution {
     }
 
     /**
+     * 621. Task Scheduler
+     * todo
+     * @param tasks
+     * @param n
+     * @return
+     */
+    public int leastInterval(char[] tasks, int n) {
+
+
+        return 0;
+    }
+
+    /**
+     * 659. Split Array into Consecutive Subsequences
+     * @param nums
+     * @return
+     */
+    public static boolean isPossible(int[] nums) {
+        int total_cnt = 0;
+        int curr_cnt;
+        while (total_cnt < nums.length){
+            curr_cnt = 0;
+            for (int i = 0; i < nums.length-1;) {
+                if (nums[i] != -1){
+                    curr_cnt++;
+                    int j = i + 1;
+                    while (j < nums.length && (nums[j] == -1 || nums[j] == nums[i])){
+                        j++;
+                    }
+                    if (j == nums.length){
+                        break;
+                    }
+                    i = j;
+                    nums[i] = -1;
+                }else {
+                    i++;
+                }
+            }
+            System.out.println(total_cnt + "---" + curr_cnt);
+            if (curr_cnt < 3)   return false;
+            total_cnt += curr_cnt;
+        }
+        return true;
+    }
+
+    /**
      * 714. Best Time to Buy and Sell Stock with Transaction Fee
      * Input: prices = [1, 3, 2, 8, 4, 9], fee = 2
      * Output: 8
@@ -109,6 +199,24 @@ public class Solution {
         }
         return profit;
     }
+
+    /**
+     * 738. Monotone Increasing Digits
+     * pass    99%     100%
+     * @param N
+     * @return
+     */
+    public static int monotoneIncreasingDigits(int N) {
+        char[] str = String.valueOf(N).toCharArray();
+        for (int i = str.length - 1; i > 0; i--) {
+            if (str[i] < str[i-1]){
+                for (int j=i; j<str.length; j++)   str[j] = '9';
+                str[i-1] -= 1;
+            }
+        }
+        return Integer.valueOf(String.valueOf(str));
+    }
+
 
     /**
      * 763. Partition Labels
@@ -141,6 +249,48 @@ public class Solution {
         }
 
         return res;
+    }
+
+
+
+    /**
+     * 767. Reorganize String
+     * pass 5%  5%
+     * todo
+     * @param S
+     * @return
+     */
+    public static String reorganizeString(String S) {
+        LinkedList<Character> chars = new LinkedList<>();
+        for (char c : S.toCharArray())  chars.add(c);
+        for (int i = 0; i < chars.size()-1; i++) {
+            if (chars.get(i) == chars.get(i+1)){
+                char tmp = chars.remove(i+1);
+                int k = -1;
+                for (int j = 0; j < chars.size(); j++) {
+                     if (j == 0 || j == chars.size()-1){
+                         if (tmp != chars.get(j)){
+                             k = j == 0 ? 0 : j + 1;
+                         }
+                     }else {
+                         if (tmp != chars.get(j-1) && tmp != chars.get(j)){
+                             k = j;
+                         }
+                     }
+                }
+                if (k == -1){
+                    return "";
+                }
+                chars.add(k, tmp);
+                i--;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Object o : chars.toArray()) {
+            sb.append(o);
+        }
+        System.out.println(sb.toString());
+        return sb.toString();
     }
 
     /**
@@ -225,7 +375,51 @@ public class Solution {
         return res;
     }
 
+    /**
+     * 870. Advantage Shuffle
+     * pass  13%  91%
+     * @param A
+     * @param B
+     * @return
+     */
+    public int[] advantageCount(int[] A, int[] B) {
+        int[] res = new int[A.length];
+        Arrays.sort(A);
+        for (int i = 0; i < B.length; i++) {
+            int j = 0;
+            while (j < A.length && A[j] <= B[i])    j++;
+            if (j != A.length){
+                res[i] = A[j];
+                A[j] = -1;
+            }else {
+                j = 0;
+                while (j < A.length && A[j] == -1)    j++;
+                res[i] = A[j];
+                A[j] = -1;
+            }
+        }
+        return res;
+    }
 
+    /**
+     * 881. Boats to Save People
+     * pass
+     * @param people
+     * @param limit
+     * @return
+     */
+    public int numRescueBoats(int[] people, int limit) {
+        int res = 0;
+//        自定义排序比较方法，不能用于基本数据类型
+        Arrays.sort(people);
+        int i = 0, j = people.length - 1;
+        while (i <= j){
+            res++;
+            if (people[i] + people[j] <= limit)     i++;
+            j--;
+        }
+        return res;
+    }
 
     /**
      * 921. Minimum Add to Make Parentheses Valid
@@ -253,6 +447,31 @@ public class Solution {
         }
 
         return help.size();
+    }
+
+    public static void main(String[] args) {
+        int X = 1;
+        int Y = 1000000000;
+        brokenCalc(X, Y);
+    }
+
+    /**
+     * 991. Broken Calculator
+     * pass
+     * @param X
+     * @param Y
+     * @return
+     */
+    public static int brokenCalc(int X, int Y) {
+        int res = 0;
+        while (Y > X){
+            res++;
+            if (Y % 2 == 1)
+                Y++;
+            else
+                Y /= 2;
+        }
+        return res + X - Y;
     }
 
     /**
