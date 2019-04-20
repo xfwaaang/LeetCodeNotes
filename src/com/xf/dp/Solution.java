@@ -90,6 +90,24 @@ public class Solution {
         return dp[nums.length];
     }
 
+    /**
+     * 338. Counting Bits
+     * @param num
+     * @return
+     */
+    public int[] countBits(int num) {
+        int[] dp = new int[num+1];
+        dp[0] = 0;
+        for (int i=1; i<=num; i++){
+            if (i % 2 == 0){
+                dp[i] = dp[i-1];
+            }else {
+                dp[i] = dp[i-1] + 1;
+            }
+        }
+        return dp;
+    }
+
 
     public static void main(String[] args){
         int[] cost = {1,0,1,0};
