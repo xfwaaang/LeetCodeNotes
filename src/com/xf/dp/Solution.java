@@ -147,17 +147,49 @@ public class Solution {
 
     /**
      * 877. Stone Game
+     * pass   26%   35%
+     * 设 dp[i][j] 表示 piles[i-1] - piles[j-1]，Alex and Lee之间stone数的差值，dp[i][j] > 0，表示 Alex wins
+     * Alex 先取一个石碓，有两种情况，Lee 再取一个石碓，又有两种情况，总共有四种情况
+     * 1. Alex 取 piles[j-1]
+     *    a. Lee 取 piles[j-2]  -->  piles[j-1] - piles[j-2] + dp[i][j-2]
+     *    b. Lee 取 piles[i-1]  -->  piles[j-1] - piles[i-1] + dp[i+1][j-1]
+     * 2. Alex 取 piles[i-1]
+     *    a. Lee 取 piles[j-1]  -->  piles[i-1] - piles[j-1] + dp[i+1][j-1]
+     *    b. Lee 取 piles[i]    -->  piles[i-1] - piles[i] + dp[i+2][j]
+     *  取四者最大值，即为 dp[i][j]
      * @param piles
      * @return
      */
     public boolean stoneGame(int[] piles) {
-        boolean[] dp = new boolean[piles.length+1];
-        dp[2] = true;
-        for (int i=4; i<=piles.length; i+=2){
+        int[][] dp = new int[piles.length+1][piles.length+1];
 
+        for (int i = 1; i < piles.length; i++) {
+            dp[i][i+1] = Math.abs(piles[i-1] - piles[i]);
         }
-        return dp[piles.length];
+
+        for (int k=3; k<piles.length; k+=2){
+            for (int i=1; i<=piles.length-k; i++){
+               int j = i + k;
+               dp[i][j] = Math.max(
+                   Math.max(piles[j-1] - piles[j-2] + dp[i][j-2], piles[j-1] - piles[i-1] + dp[i+1][j-1])
+                   , Math.max(piles[i-1] - piles[j-1] + dp[i+1][j-1], piles[i-1] - piles[i] + dp[i+2][j]));
+            }
+        }
+
+        return dp[1][piles.length] > 0;
     }
+
+    /**
+     * 877. Stone Game
+     * 优化 todo
+     * @param piles
+     * @return
+     */
+    public boolean stoneGame_pro(int[] piles) {
+
+        return false;
+    }
+
 
 
     /**
