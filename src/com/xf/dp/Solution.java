@@ -118,9 +118,7 @@ public class Solution {
     }
 
 
-    public static void main(String[] args){
-        int[] cost = {1,0,1,0};
-    }
+
 
     /**
      * 746. Min Cost Climbing Stairs
@@ -156,7 +154,7 @@ public class Solution {
      * 2. Alex 取 piles[i-1]
      *    a. Lee 取 piles[j-1]  -->  piles[i-1] - piles[j-1] + dp[i+1][j-1]
      *    b. Lee 取 piles[i]    -->  piles[i-1] - piles[i] + dp[i+2][j]
-     *  取四者最大值，即为 dp[i][j]
+     * 取四者最大值，即为 dp[i][j]
      * @param piles
      * @return
      */
@@ -189,6 +187,26 @@ public class Solution {
     public boolean stoneGame_pro(int[] piles) {
 
         return false;
+    }
+
+    public static void main(String[] args){
+//        [1,2,3,4,6,8,9,10,13,14,16,17,19,21,24,26,27,28,29] [3,14,50]
+        int[] days = {1,2,3,4,6,8,9,10,13,14,16,17,19,21,24,26,27,28,29};
+        int[] costs = {3,14,50};
+        System.out.println(mincostTickets(days, costs));
+    }
+
+    /**
+     * 983. Minimum Cost For Tickets
+     * todo
+     * @param days
+     * @param costs
+     * @return
+     */
+    public static int mincostTickets(int[] days, int[] costs) {
+        int[] dp = new int[days.length+1];
+
+        return dp[days.length];
     }
 
 
