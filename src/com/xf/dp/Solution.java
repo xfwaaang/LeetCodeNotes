@@ -92,7 +92,15 @@ public class Solution {
 
     /**
      * 338. Counting Bits
-     *
+     * pass  99%  100%
+     * dp[i] 表示 i 的二进制表示中 1 的个数
+     * 考虑 i 的奇偶性
+     * 1. i 为偶数
+     *   i = i/2 + i/2  -->  dp[i] = dp[i/2]
+     *   两个相同数字相加不改变其二进制表示中 1 的个数
+     * 2. i 为奇数
+     *   i = i-1 + 1  -->  dp[i] = dp[i-1] + 1
+     *   i 为奇数，则 i-1 为偶数，其二进制表示的最低位为 0，加上 1，不产生进位
      * @param num
      * @return
      */
@@ -101,7 +109,7 @@ public class Solution {
         dp[0] = 0;
         for (int i=1; i<=num; i++){
             if (i % 2 == 0){
-                dp[i] = dp[i-1];
+                dp[i] = dp[i/2];
             }else {
                 dp[i] = dp[i-1] + 1;
             }
@@ -112,7 +120,6 @@ public class Solution {
 
     public static void main(String[] args){
         int[] cost = {1,0,1,0};
-        minCostClimbingStairs(cost);
     }
 
     /**
@@ -127,7 +134,7 @@ public class Solution {
      * @param cost
      * @return
      */
-    public static int minCostClimbingStairs(int[] cost) {
+    public int minCostClimbingStairs(int[] cost) {
         int[] dp = new int[cost.length+1];
         dp[0] = 0;
         dp[1] = 0;
@@ -136,6 +143,20 @@ public class Solution {
             dp[i] = Math.min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2]);
         }
         return dp[cost.length];
+    }
+
+    /**
+     * 877. Stone Game
+     * @param piles
+     * @return
+     */
+    public boolean stoneGame(int[] piles) {
+        boolean[] dp = new boolean[piles.length+1];
+        dp[2] = true;
+        for (int i=4; i<=piles.length; i+=2){
+
+        }
+        return dp[piles.length];
     }
 
 
