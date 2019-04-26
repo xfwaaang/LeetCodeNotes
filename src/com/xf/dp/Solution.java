@@ -118,6 +118,70 @@ public class Solution {
     }
 
 
+    /**
+     * 413. Arithmetic Slices
+     * pass    100%   7%
+     * A[1:i] : A[0] - A[i-1]
+     * dp[i] : numberOfArithmeticSlices( A[1:i] )
+     * k : 表示 A[1:i] 中以 A[i-1] 结尾的个数（最小长度为 2）
+     * 考虑 A[i-1]，有两种情况
+     * 1. 子数组不包括 A[i-1]
+     *    此时 numberOfArithmeticSlices 为 dp[i-1]
+     * 2. 子数组包括 A[i-1]
+     *    此时 numberOfArithmeticSlices 为 k 或 0
+     * dp[i] 为两者之和
+     * opt todo
+     * @param A
+     * @return
+     */
+    public int numberOfArithmeticSlices(int[] A) {
+        if (A.length < 3)   return 0;
+        int[] dp = new int[A.length+1];
+        dp[0] = 0;
+        dp[1] = 0;
+        dp[2] = 0;
+        int k = 1;
+        for (int i=3; i<=A.length; i++){
+            dp[i] = dp[i-1];
+            if (A[i-1] - A[i-2] == A[i-2] - A[i-3]){
+                dp[i] += k;
+                k += 1;
+            }else {
+                k = 1;
+            }
+        }
+        return dp[A.length];
+    }
+
+
+    /**
+     * 647. Palindromic Substrings
+     * pass  7%   7%
+     * opt  todo
+     * @param s
+     * @return
+     */
+    public int countSubstrings(String s) {
+        int[] dp = new int[s.length()+1];
+        dp[1] = 1;
+        for (int k=2; k<=s.length(); k++){
+            dp[k] = dp[k-1];
+            for (int i=1; i<=k; i++){
+                dp[k] += isPalindromic(s, i, k) ? 1 : 0;
+            }
+        }
+        return dp[s.length()];
+    }
+
+    private boolean isPalindromic(String s, int i, int j) {
+        String tmp = new String(s.toCharArray(), i-1, j-i+1);
+        boolean flag = true;
+        for (int k=0; k<tmp.length()/2; k++){
+            if (tmp.charAt(k) != tmp.charAt(tmp.length()-k-1))    flag = false;
+        }
+//        System.out.println(tmp+ ": " + flag);
+        return flag;
+    }
 
 
     /**
@@ -190,22 +254,37 @@ public class Solution {
     }
 
     public static void main(String[] args){
-//        [1,2,3,4,6,8,9,10,13,14,16,17,19,21,24,26,27,28,29] [3,14,50]
-        int[] days = {1,2,3,4,6,8,9,10,13,14,16,17,19,21,24,26,27,28,29};
-        int[] costs = {3,14,50};
-        System.out.println(mincostTickets(days, costs));
+        int[] days = {1,4,6,7,8,20};
+        int[] costs = {2,7,15};
+        mincostTickets(days, costs);
     }
 
     /**
      * 983. Minimum Cost For Tickets
      * todo
+     * dp[i] = dp[i-1] + cost(i)
+     * dp[i] = dp[k] + cost(k+1)
      * @param days
      * @param costs
      * @return
      */
     public static int mincostTickets(int[] days, int[] costs) {
         int[] dp = new int[days.length+1];
-
+        int minCost = Math.min(costs[0], Math.min(costs[1], costs[2]));
+        System.out.println("minCost: " + minCost);
+        dp[0] = 0;
+        dp[1] = minCost;
+        for (int i=2; i<=days.length; i++){
+            dp[i] = dp[i-1] + minCost;
+            for (int k=1; k<i; k++){
+                if (days[i-1] - days[k-1] < 7){
+                    dp[i] = Math.min(dp[i], Math.min(dp[k-1] + costs[1], dp[k-1] + costs[2]));
+                }else if (days[i-1] - days[k-1] < 15){
+                    dp[i] = Math.min(dp[i], dp[k-1] + costs[2]);
+                }
+            }
+            System.out.println("dp[" + i + "] = " + dp[i]);
+        }
         return dp[days.length];
     }
 
