@@ -117,6 +117,31 @@ public class Solution {
         return dp;
     }
 
+    public static void main(String[] args){
+
+    }
+
+    /**
+     * 343. Integer Break
+     *  pass   50%   100%
+     * 设 dp[i] 表示 integerBreak(i)
+     * dp[i] = max{ max(k, dp[k]) * (i-k) }     1 <= k < i
+     * @param n
+     * @return
+     */
+    public int integerBreak(int n) {
+        int[] dp = new int[n+1];
+        dp[1] = 0;
+        dp[2] = 1;
+        for (int i=3; i<=n; i++){
+            dp[i] = -1;
+            for (int k=1; k<i; k++){
+                dp[i] = Math.max(dp[i], Math.max(k, dp[k]) * (i-k));
+            }
+        }
+        return dp[n];
+    }
+
 
     /**
      * 413. Arithmetic Slices
@@ -253,11 +278,7 @@ public class Solution {
         return false;
     }
 
-    public static void main(String[] args){
-        int[] days = {1,4,6,7,8,20};
-        int[] costs = {2,7,15};
-        mincostTickets(days, costs);
-    }
+
 
     /**
      * 983. Minimum Cost For Tickets
