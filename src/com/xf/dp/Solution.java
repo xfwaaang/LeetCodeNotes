@@ -40,7 +40,7 @@ public class Solution {
      * @param n  行
      * @return
      */
-    public static int uniquePaths(int m, int n) {
+    public static int uniquePaths(int m, int n)  {
         int[][] dp = new int[n+1][m+1];
 
         dp[1][1] = 1;
@@ -197,7 +197,6 @@ public class Solution {
     }
 
 
-
     /**
      * 343. Integer Break
      *  pass   50%   100%
@@ -253,6 +252,20 @@ public class Solution {
             }
         }
         return dp[A.length];
+    }
+
+    /**
+     * 486. Predict the Winner
+     * like 877
+     * todo
+     * @param nums
+     * @return
+     */
+    public boolean PredictTheWinner(int[] nums) {
+        int[] dp = new int[nums.length+1];
+        dp[1] = nums[0];
+
+        return dp[nums.length] > 0;
     }
 
 
@@ -311,6 +324,7 @@ public class Solution {
 
     /**
      * 877. Stone Game
+     * like 486
      * pass   26%   35%
      * 设 dp[i][j] 表示 piles[i-1] - piles[j-1]，Alex and Lee之间stone数的差值，dp[i][j] > 0，表示 Alex wins
      * Alex 先取一个石碓，有两种情况，Lee 再取一个石碓，又有两种情况，总共有四种情况
