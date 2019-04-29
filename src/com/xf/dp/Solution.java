@@ -24,6 +24,85 @@ public class Solution {
         return maxSum;
     }
 
+    public static void main(String[] args){
+        int m = 7, n = 3;
+        System.out.println(uniquePaths(m, n));
+
+    }
+
+    /**
+     * 62. Unique Paths
+     * pass   100%  100%
+     * 网格类 动态规划问题
+     * 设 dp[i][j] 表示 uniquePaths(j, i)
+     * dp[i][j] = dp[i-1][j] + dp[i][j-1]
+     * @param m  列
+     * @param n  行
+     * @return
+     */
+    public static int uniquePaths(int m, int n) {
+        int[][] dp = new int[n+1][m+1];
+
+        dp[1][1] = 1;
+        for (int i=1; i<=m; i++)    dp[0][i] = 0;
+        for (int i=1; i<=n; i++)    dp[i][0] = 0;
+
+        for (int k=2; k<=m; k++){
+            int j = k;
+            for (int i=1; i<=k && i<=n; i++){
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];
+                j -= 1;
+            }
+        }
+
+        for (int k=2; k<=n; k++){
+            int i = k;
+            for (int j=m; j>0 && i<=n; j--){
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];
+                i += 1;
+            }
+        }
+
+        return dp[n][m];
+    }
+
+    /**
+     * 64. Minimum Path Sum
+     * pass   98%   18%
+     * 网格类 动态规划问题
+     * 设 dp[i][j] 表示 minPathSum(grid)
+     * dp[i][j] = min{dp[i-1][j], dp[i][j-1]} + grid[i-1][j-1]
+     * @param grid
+     * @return
+     */
+    public int minPathSum(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int[][] dp = new int[m+1][n+1];
+
+        dp[1][1] = grid[0][0];
+        for (int i=1; i<=m; i++)    dp[i][0] = Integer.MAX_VALUE;
+        for (int i=1; i<=n; i++)    dp[0][i] = Integer.MAX_VALUE;
+
+        for (int k=2; k<=n; k++){
+            int j = k;
+            for (int i=1; i<=k && i<=m; i++){
+                dp[i][j] = Math.min(dp[i-1][j], dp[i][j-1]) + grid[i-1][j-1];
+                j -= 1;
+            }
+        }
+
+        for (int k=2; k<=m; k++){
+            int i = k;
+            for (int j=n; j>0 && i<=m; j--){
+                dp[i][j] = Math.min(dp[i-1][j], dp[i][j-1]) + grid[i-1][j-1];
+                i += 1;
+            }
+        }
+
+        return dp[m][n];
+    }
+
     /**
      * 121. Best Time to Buy and Sell Stock
      * not dp  pass  80%  60%
@@ -117,9 +196,7 @@ public class Solution {
         return dp;
     }
 
-    public static void main(String[] args){
 
-    }
 
     /**
      * 343. Integer Break
