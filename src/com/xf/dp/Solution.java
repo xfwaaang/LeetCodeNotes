@@ -4,6 +4,13 @@ package com.xf.dp;
  * @author xfwaaang
  * @create 2019-04-16 11:52
  * 动态规划
+ *
+ * 解题心得
+ * 1. 二维动态规划
+ *      a. 左上到右下遍历 等价于 按行遍历
+ *      b. 同样道理：左下到右上遍历 等价于 倒序按行遍历（从最后一行开始），不过此类问题多是从斜对角线开始的并且行数与列数相等，无论哪种方法都较为简洁
+ * 2. 转换
+ *      a. 比大小可以转化为差值。。。
  */
 public class Solution {
 
@@ -24,16 +31,13 @@ public class Solution {
         return maxSum;
     }
 
-    public static void main(String[] args){
-        int m = 7, n = 3;
-        System.out.println(uniquePaths(m, n));
 
-    }
 
     /**
      * 62. Unique Paths
      * pass   100%  100%
-     * 网格类 动态规划问题
+     * 非等边网格类 动态规划问题
+     * 左上到右下遍历 等价于 按行遍历
      * 设 dp[i][j] 表示 uniquePaths(j, i)
      * dp[i][j] = dp[i-1][j] + dp[i][j-1]
      * @param m  列
@@ -47,21 +51,30 @@ public class Solution {
         for (int i=1; i<=m; i++)    dp[0][i] = 0;
         for (int i=1; i<=n; i++)    dp[i][0] = 0;
 
-        for (int k=2; k<=m; k++){
-            int j = k;
-            for (int i=1; i<=k && i<=n; i++){
+//        1.按行遍历
+        for (int i=1; i<=n; i++){
+            for (int j=1; j<=m; j++){
+                if (i == 1 && j == 1)   continue;
                 dp[i][j] = dp[i-1][j] + dp[i][j-1];
-                j -= 1;
             }
         }
 
-        for (int k=2; k<=n; k++){
-            int i = k;
-            for (int j=m; j>0 && i<=n; j--){
-                dp[i][j] = dp[i-1][j] + dp[i][j-1];
-                i += 1;
-            }
-        }
+//        2.左上到右下遍历
+//        for (int k=2; k<=m; k++){
+//            int j = k;
+//            for (int i=1; i<=k && i<=n; i++){
+//                dp[i][j] = dp[i-1][j] + dp[i][j-1];
+//                j -= 1;
+//            }
+//        }
+//
+//        for (int k=2; k<=n; k++){
+//            int i = k;
+//            for (int j=m; j>0 && i<=n; j--){
+//                dp[i][j] = dp[i-1][j] + dp[i][j-1];
+//                i += 1;
+//            }
+//        }
 
         return dp[n][m];
     }
@@ -69,7 +82,9 @@ public class Solution {
     /**
      * 64. Minimum Path Sum
      * pass   98%   18%
-     * 网格类 动态规划问题
+     * 非等边网格类 动态规划问题
+     * 左上到右下遍历 等价于 按行遍历
+     * 同样道理：左下到右上遍历 等价于 倒序按行遍历（从最后一行开始），不过此类问题多是从斜对角线开始的并且行数与列数相等，无论哪种方法都较为简洁
      * 设 dp[i][j] 表示 minPathSum(grid)
      * dp[i][j] = min{dp[i-1][j], dp[i][j-1]} + grid[i-1][j-1]
      * @param grid
@@ -84,21 +99,30 @@ public class Solution {
         for (int i=1; i<=m; i++)    dp[i][0] = Integer.MAX_VALUE;
         for (int i=1; i<=n; i++)    dp[0][i] = Integer.MAX_VALUE;
 
-        for (int k=2; k<=n; k++){
-            int j = k;
-            for (int i=1; i<=k && i<=m; i++){
+//        按行遍历
+        for (int i=1; i<=m; i++){
+            for (int j=1; j<=n; j++){
+                if (i == 1 && j == 1)   continue;
                 dp[i][j] = Math.min(dp[i-1][j], dp[i][j-1]) + grid[i-1][j-1];
-                j -= 1;
             }
         }
 
-        for (int k=2; k<=m; k++){
-            int i = k;
-            for (int j=n; j>0 && i<=m; j--){
-                dp[i][j] = Math.min(dp[i-1][j], dp[i][j-1]) + grid[i-1][j-1];
-                i += 1;
-            }
-        }
+//        左上到右下遍历
+//        for (int k=2; k<=n; k++){
+//            int j = k;
+//            for (int i=1; i<=k && i<=m; i++){
+//                dp[i][j] = Math.min(dp[i-1][j], dp[i][j-1]) + grid[i-1][j-1];
+//                j -= 1;
+//            }
+//        }
+//
+//        for (int k=2; k<=m; k++){
+//            int i = k;
+//            for (int j=n; j>0 && i<=m; j--){
+//                dp[i][j] = Math.min(dp[i-1][j], dp[i][j-1]) + grid[i-1][j-1];
+//                i += 1;
+//            }
+//        }
 
         return dp[m][n];
     }
@@ -254,6 +278,11 @@ public class Solution {
         return dp[A.length];
     }
 
+    public static void main(String[] args){
+        int[] nums = {1, 5, 2};
+        PredictTheWinner(nums);
+    }
+
     /**
      * 486. Predict the Winner
      * like 877
@@ -261,11 +290,19 @@ public class Solution {
      * @param nums
      * @return
      */
-    public boolean PredictTheWinner(int[] nums) {
-        int[] dp = new int[nums.length+1];
-        dp[1] = nums[0];
+    public static boolean PredictTheWinner(int[] nums) {
 
-        return dp[nums.length] > 0;
+        return false;
+    }
+
+    /**
+     * 516. Longest Palindromic Subsequence
+     * todo
+     * @param s
+     * @return
+     */
+    public int longestPalindromeSubseq(String s) {
+        return 0;
     }
 
 
@@ -296,6 +333,58 @@ public class Solution {
         }
 //        System.out.println(tmp+ ": " + flag);
         return flag;
+    }
+
+    /**
+     * 650. 2 Keys Keyboard
+     * pass  33%   100%
+     * dp[i] = min{ dp[k] + i/k }   i % k == 0, 1 <= k <= i/2
+     * @param n
+     * @return
+     */
+    public int minSteps(int n) {
+        int[] dp = new int[n+1];
+        dp[1] = 0;
+        for (int i=2; i<=n; i++){
+            dp[i] = Integer.MAX_VALUE;
+            for (int k=1; k<=i/2; k++){
+                if (i % k == 0){
+                    dp[i] = Math.min(dp[i], dp[k] + i/k);
+                }
+            }
+        }
+        return dp[n];
+    }
+
+    /**
+     * 718. Maximum Length of Repeated Subarray
+     * pass   64%  6%
+     * todo understanding?    like max common substring
+     * @param A
+     * @param B
+     * @return
+     */
+    public int findLength(int[] A, int[] B) {
+        int m = A.length, n = B.length;
+        int[][] dp = new int[m+1][n+1];
+        for(int i=0; i<=m; i++)	dp[i][0] = 0;
+        for(int i=0; i<=n; i++) dp[0][i] = 0;
+
+        int res = 0;
+        for(int i=1; i<=m; i++)
+        {
+            for(int j=1; j<=n; j++)
+            {
+                if(A[i-1] == B[j-1])
+                {
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                }
+                res = Math.max(res, dp[i][j]);
+            }
+
+        }
+
+        return res;
     }
 
 
@@ -369,8 +458,6 @@ public class Solution {
         return false;
     }
 
-
-
     /**
      * 983. Minimum Cost For Tickets
      * todo
@@ -399,7 +486,6 @@ public class Solution {
         }
         return dp[days.length];
     }
-
 
 
     /**
