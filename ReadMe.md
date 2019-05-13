@@ -3,4 +3,5 @@
 ## Algorithms
 
 ### [dp](/notes/dp.md)
+### [linkedlist](/notes/linkedlist.md)
 ### [Tree](/notes/tree.md)

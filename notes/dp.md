@@ -9,7 +9,7 @@
 
 #### 题目示例
 ##### 一维
-- [53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray)
+###### [53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray)
 ```java
     public int maxSubArray(int[] nums) {
         int sum = nums[0];
@@ -22,7 +22,7 @@
         return maxSum;
     }
 ```
-- [121. Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+###### [121. Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
 > 假设您有一个数组，其中第i个元素是第一天给定股票的价格。  
   如果你只被允许完成至多一笔交易（即买一份，卖一份股票），设计一个算法来找到最大利润。  
   请注意，在购买股票之前，您不能出售股票。
@@ -56,7 +56,7 @@
         return dp[prices.length];
     }
 ```
-- [198. House Robber](https://leetcode.com/problems/house-robber/)
+###### [198. House Robber](https://leetcode.com/problems/house-robber/)
 > 你是一个计划沿着街道抢劫房屋的专业抢劫犯。每栋房子都有一定数量的钱被藏起来，唯一阻止你抢劫它们的限制是相邻的房子都有安全系统连接，如果两个相邻的房子在同一个晚上被闯入，它会自动联系警察。  
   给出一个非负整数的列表，代表每个房子的钱的数量，确定你今晚可以抢劫的最大金额，而不需要报警。
 
@@ -84,7 +84,7 @@ public int rob(int[] nums) {
 }
 ```
 
-- [338. Counting Bits](https://leetcode.com/problems/counting-bits/)
+###### [338. Counting Bits](https://leetcode.com/problems/counting-bits/)
 
 > 给定一个非负整数num。对于0≤i≤num范围内的每个数字i，计算其二进制表示形式中的1个数，并将其作为数组返回。
 
@@ -112,7 +112,7 @@ public int[] countBits(int num) {
 }
 ```
 
-- [343. Integer Break](https://leetcode.com/problems/integer-break/)
+###### [343. Integer Break](https://leetcode.com/problems/integer-break/)
 
 > 给定一个正整数n，将其分解为至少两个正整数之和，并使这些整数的乘积最大化。返回您能得到的最大产品。
 
@@ -134,7 +134,7 @@ public int integerBreak(int n) {
 }
 ```
 
-- [413. Arithmetic Slices](https://leetcode.com/problems/arithmetic-slices/)
+###### [413. Arithmetic Slices](https://leetcode.com/problems/arithmetic-slices/)
 
 > 如果一个数列由至少三个元素组成，并且任意两个连续元素之间的差相同，则称为算术。  
   给出了一个由n个数组成的零索引数组a。该数组的一个切片是任何一对整数（p，q），因此0<=p<q<n。  
@@ -177,7 +177,7 @@ public int integerBreak(int n) {
     }
 ```
 
-- [650. 2 Keys Keyboard](https://leetcode.com/problems/2-keys-keyboard/)
+###### [650. 2 Keys Keyboard](https://leetcode.com/problems/2-keys-keyboard/)
 
 > 最初在记事本上，只有一个字符“A”存在。对于每个步骤，您可以在此记事本上执行两个操作：  
   全部复制：您可以复制记事本上的所有字符（不允许部分复制）。  
@@ -203,7 +203,7 @@ public int integerBreak(int n) {
     }
 ```
 
-- [746. Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/)
+###### [746. Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/)
 
 > 在楼梯上，第i步分配了一些非负成本（索引为0）。  
   一旦你支付了费用，你就可以爬一两步。您需要找到到达顶层的最低成本，您可以从索引为0的步骤开始，也可以从索引为1的步骤开始。
@@ -229,7 +229,7 @@ public int integerBreak(int n) {
     }
 ```
 
-- [1025. Divisor Game](https://leetcode.com/problems/divisor-game/)
+###### [1025. Divisor Game](https://leetcode.com/problems/divisor-game/)
 
 > 爱丽丝和鲍勃轮流玩游戏，爱丽丝先开始。  
   最初，黑板上有一个数字n。在每个玩家的回合中，该玩家的移动包括：  
@@ -261,7 +261,7 @@ public int integerBreak(int n) {
 
 ##### 二维
 
-- [62. Unique Paths](https://leetcode.com/problems/unique-paths)
+###### [62. Unique Paths](https://leetcode.com/problems/unique-paths)
 > 机器人位于M x N网格的左上角（下图中标记为“开始”）。  
   机器人只能在任何时间点向下或向右移动。机器人正试图到达网格的右下角（在下图中标记为“完成”）。  
   有多少可能的唯一路径？
@@ -306,7 +306,7 @@ public int integerBreak(int n) {
     }
 ```
 
-- [64. Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/)
+###### [64. Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/)
 > 给定一个由非负数填充的m x n网格，找到一条从左上到右下的路径，该路径使沿其路径的所有数字之和最小化。  
   注意：您只能在任何时间点向下或向右移动。
 
@@ -352,7 +352,7 @@ public int minPathSum(int[][] grid) {
 }
 ```
 
-- [877. Stone Game](https://leetcode.com/problems/stone-game/)
+###### [877. Stone Game](https://leetcode.com/problems/stone-game/)
 
 > 亚历克斯和李用一堆石头玩游戏。成排排列的桩数是偶数，每根桩的石桩数为正整数[i]。  
   游戏的目标是用最多的石头结束。石头的总数是奇数，所以没有联系。  
