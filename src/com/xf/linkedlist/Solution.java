@@ -127,6 +127,27 @@ public class Solution {
     }
 
     /**
+     * 160. Intersection of Two Linked Lists
+     * pass   5%  5%
+     * todo，time O(n)  space O(1)
+     * @param headA
+     * @param headB
+     * @return
+     */
+    public ListNode getIntersectionNode_3(ListNode headA, ListNode headB) {
+        ListNode p = headB;
+        while (headA != null){
+            p = headB;
+            while (p != null){
+                if (headA == p) return p;
+                p = p.next;
+            }
+            headA = headA.next;
+        }
+        return null;
+    }
+
+    /**
      * 203. Remove Linked List Elements
      * Input:  1->2->6->3->4->5->6, val = 6
      * Output: 1->2->3->4->5
