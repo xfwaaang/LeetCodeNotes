@@ -112,6 +112,7 @@ public class PermuteAndCombine {
      * 方法1
      * 标记法
      * 标记当前元素的状态，选中与不选中
+     * 标记法时间复杂度较低
      * @param nums 待排列数组
      * @param m 排列元素数目
      * @return 返回数组m个元素的所有组合
