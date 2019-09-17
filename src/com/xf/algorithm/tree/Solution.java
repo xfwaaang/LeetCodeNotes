@@ -6,6 +6,8 @@ import java.util.*;
  * @author xfwaaang
  * @create 2019-03-08 19:16
  *
+ * 最长子树路径
+ *
  * 94. 二叉树中序遍历      中序遍历
  * 101. 判断二叉树是否对称，包括val     对称
  * 107. 二叉树层次遍历，逆序输出        层次遍历   逆序
@@ -22,8 +24,58 @@ import java.util.*;
  * 687. Longest Univalue Path       最长路径（路径上结点权值相同）
  * 701. 向二叉搜索树中插入一个结点       二叉搜索树  插入
  * 814. 清除子树权值全为0的子树        删除子树
+ * 894. TODO
+ * 951. Flip Equivalent Binary Trees  翻转等价
+ * 1008. 根据二叉搜索树的前序遍历序列构建原树         二叉搜索树   前序序列     构建
  */
 public class Solution {
+
+    /**
+     * 最长子树路径
+     * 给定一个以节点1为根的树，每条边上都有一个权值
+     * 对于每个节点u，找到它子树中的一个节点v，使得路径边权值和最大
+     * 输入描述
+     * 输入n行，第一行表示节点个数，剩下n-1行三个数字分别表示一条边的顶点u、顶点v、边权值c
+     * 输出描述
+     * 一行n个数字表示每个节点的子树中距离它最长的边权值和
+     * 输入：5 {1,2,-3}, {1,3,2}, {2,4,6}, {2,5,-3}
+     * 输出：3 6 0 0 0
+     * 遍历，递归
+     * @param n
+     * @param edge
+     * @return
+     */
+    public static int[] maxSubTreePath(int n, int[][] edge){
+        int[] res = new int[n];
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for(int i=0; i<edge.length; i++){
+            int u = edge[i][0];
+            int v = edge[i][1];
+            int c = edge[i][2];
+
+            int weight = c + findV(i+1, edge, v);
+
+            if(map.get(u) == null){
+                map.put(u, weight);
+            }else {
+                if(map.get(u) < weight){
+                    map.put(u, weight);
+                }
+            }
+        }
+
+        int k = 0;
+        for(Map.Entry<Integer, Integer> entry : map.entrySet())   res[k++] = entry.getValue();
+        for(int i=k; i<res.length; i++)     res[i] = 0;
+
+        return res;
+    }
+
+    private static int findV(int j, int[][] edge, int v) {
+        for(int i=j; i<edge.length; i++)    if(edge[i][0] == v)     return edge[i][2] + findV(i+1, edge, edge[i][1]);
+        return 0;
+    }
 
     /**
      * 94. Binary Tree Inorder Traversal
@@ -45,7 +97,6 @@ public class Solution {
             inorderTraversalHelper(root.right, res);
         }
     }
-
 
     /**
      * 101. Symmetric Tree
@@ -592,12 +643,21 @@ public class Solution {
     }
 
     private TreeNode allPossibleFBTHelper(List<TreeNode> list, int n) {
+        
         return null;
     }
 
     /**
      * 951. Flip Equivalent Binary Trees
-     * pass
+     * 对于二叉树t，我们可以定义如下翻转操作：选择任意节点，并交换左、右子树。
+     * 二叉树x是二叉树y的翻转等价物，前提是我们可以在一些翻转操作之后使x等于y。
+     * 编写一个函数来确定两棵二叉树是否是翻转等价的。树由根节点root1和root2给出
+     * Example 1:
+     * Input: root1 = [1,2,3,4,5,6,null,null,null,7,8], root2 = [1,3,2,null,6,4,5,null,null,null,null,8,7]
+     * Output: true
+     * Explanation: We flipped at nodes with values 1, 3, and 5.
+     * Flipped Trees Diagram
+     * pass  100%  100%
      * 1. 判断两棵树根节点的对应的孩子节点是否相等（值相等）
      * 2. 若不相等，则交换root1的左右孩子节点，若相等，则无需交换
      * 3. 判断root1和root2的对应子树是否满足flipEquiv，取两者之与
@@ -630,25 +690,6 @@ public class Solution {
      * @return
      */
     private boolean flipEquivHelper(TreeNode root1, TreeNode root2) {
-//        if (root1.left != null && root1.right != null){
-//            if (root2.left != null && root2.right != null){
-//                if (root1.left.val == root2.left.val && root1.right.val == root2.right.val){
-//                    return true;
-//                }
-//            }
-//        }else if (root1.left != null && root1.right == null){
-//            if (root2.left != null && root2.right == null){
-//                if (root1.left.val == root2.left.val){
-//                    return true;
-//                }
-//            }
-//        }else if (root1.left == null && root1.right != null){
-//            if (root2.left == null && root2.right != null){
-//                if (root1.right.val == root2.right.val){
-//                    return true;
-//                }
-//            }
-//        }
 
         int leftv1 = root1.left == null ? -1 : root1.left.val;
         int righv1 = root1.right == null ? -1 : root1.right.val;
@@ -660,7 +701,8 @@ public class Solution {
 
     /**
      * 1008. Construct Binary Search Tree from Preorder Traversal
-     * pass
+     * 根据二叉搜索树的前序遍历序列构建原树
+     * pass  100%  100%
      * @param preorder
      * @return
      */

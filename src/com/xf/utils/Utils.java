@@ -12,4 +12,6 @@ public class Utils {
     public static <T> void print(T t){
         System.out.print(t);
     }
+
+
 }

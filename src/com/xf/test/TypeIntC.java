@@ -1,4 +1,4 @@
-package com.xf.algorithm.test;
+package com.xf.test;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,10 +7,11 @@ import java.lang.annotation.Target;
 
 /**
  * @author xfwaaang
- * @create 2019-09-08 11:42
+ * @create 2019-09-13 20:11
+ * TypeInt注解容器
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface TypeString {
-    String value() default "";
+public @interface TypeIntC {
+    TypeInt[] value() default {};
 }

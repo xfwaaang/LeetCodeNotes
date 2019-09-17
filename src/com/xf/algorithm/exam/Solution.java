@@ -1,64 +1,10 @@
 package com.xf.algorithm.exam;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
 /**
  * @author xfwaaang
  * @create 2019-09-04 21:38
  */
 public class Solution {
-    /**
-     * 表达式解析
-     * 括号表示将里面的字符串反转
-     * 输入：一行字符串
-     * 输出：一行字符串、若括号不匹配，输出空字符串
-     * input：((ur)oi)
-     * output：iour
-     * @param str
-     * @return
-     */
-    public static String parseEX(String str){
-        char[] chs = str.toCharArray();
-        Stack<Character> stack = new Stack<>();
-        List<Character> list = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-
-        for (char ch : chs) {
-            if(ch == ')'){
-                list.clear();
-                char c = ' ';
-                while (!stack.empty()){
-                    c = stack.pop();
-                    if(c == '(')    break;
-                    list.add(c);
-                }
-                if(c != '('){
-                    return "";
-                }
-                if(stack.empty()){
-                    for (Character character : list) {
-                        sb.append(character);
-                    }
-                }else{
-                    for (Character character : list) {
-                        stack.push(character);
-                    }
-                }
-            }else if(ch == '('){
-                stack.push(ch);
-            }else{
-                if(!stack.empty()){
-                    stack.push(ch);
-                }else {
-                    sb.append(ch);
-                }
-            }
-        }
-
-        return sb.toString();
-    }
 
     /**
      * 输入：两行
@@ -112,40 +58,19 @@ public class Solution {
     }
 
     /**
-     * 求数对之差的最大值
-     * 数组中的一个数减去它右边子数组中的一个数可以得到一个差值，求所有可能差值的最大值
-     * 如[1,4,17,3,2,9]，最大差值为17-2=15
-     * 动态规划
-     * @param a
+     * 相邻两个数字的差值为移动距离，移动数组中的数字使得数组的总移动距离最小，返回最小移动的次数
+     * 输入：{4,2,7,6}  总移动距离为2+5+1=8
+     * 输出：2
+     * 表示最少移动2次，数组的总移动距离最小；{2,4,6,7}，总移动距离为2+2+1=5
+     * 即求逆序对个数
+     * 见 com.xf.algorithm.dac.Solution#reversePairs0(int[])
+     * @param nums
      * @return
      */
-    public int maxNumPairDiff(int[] a){
-        int maxE = a[0];
-        int maxDiff = Integer.MIN_VALUE;
-        for (int i = 1; i < a.length; i++) {
-            maxDiff = Math.max(maxDiff, maxE - a[i]);
-            maxE = Math.max(maxE, a[i]);
-        }
-        return maxDiff;
+    public int minMoveTimes(int[] nums){
+        int res = 0;
+        return res;
     }
 
-    /**
-     * 输入全为小写字母的字符串
-     * 输出无重复字母的字符串
-     * @param str
-     * @return
-     */
-    public String unique(String str){
-        StringBuilder sb = new StringBuilder();
-        int[] letters = new int[26];
-        for (int i = 0; i < letters.length; i++)    letters[i] = 0;
-        for (char ch : str.toCharArray()) {
-            if(letters[ch-'a'] == 0){
-                sb.append(ch);
-                letters[ch-'a'] = 1;
-            }
-        }
-        return sb.toString();
-    }
 
 }

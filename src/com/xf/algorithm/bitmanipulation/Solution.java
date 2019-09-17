@@ -1,10 +1,53 @@
 package com.xf.algorithm.bitmanipulation;
 
+import com.xf.test.TypeInts;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author xfwaaang
  * @create 2019-09-04 16:58
+ * 位运算相关
+ * 1. 将整数二进制表示对应位反转     位反转
+ *
+ * 137. Single Number II    求出现一次的数，其余数均出现三次
  */
 public class Solution {
+
+    /**
+     * 将整数二进制表示对应位反转
+     * 比如：20 10100 -> 01011
+     * 每一位与1异或
+     * @param packetIDList
+     * @return
+     */
+    public List<Integer> reverseBits(int[] packetIDList) {
+        int k, t;
+        for(int i=0; i<packetIDList.length; ++i)
+        {
+            if(packetIDList[i] == 0)
+            {
+                packetIDList[i] = 1;
+                continue;
+            }
+
+            t = packetIDList[i];
+            k = 1;
+            while(t > 0)
+            {
+                k <<= 1;
+                t >>= 1;
+            }
+
+            packetIDList[i] ^= k - 1;
+//            packetIDList[i] = k - 1 - packetIDList[i];    同样效果
+        }
+        List<Integer> list = new ArrayList<>();
+        for(int i : packetIDList)   list.add(i);
+        return list;
+    }
+
     /**
      * 137. Single Number II
      * Medium
@@ -23,7 +66,8 @@ public class Solution {
      * @param nums
      * @return
      */
-    public static int singleNumber(int[] nums) {
+    @TypeInts({0,1,0,1,0,1,99})
+    public int singleNumber(int[] nums) {
         int ret = 0;
         int[] bits = new int[32];
         int t;

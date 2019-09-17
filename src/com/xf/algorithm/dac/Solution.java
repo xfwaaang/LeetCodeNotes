@@ -1,11 +1,63 @@
 package com.xf.algorithm.dac;
 
+import com.xf.test.TypeInts;
+
 /**
  * @author xfwaaang
  * @create 2019-05-05 9:09
  * divide and conquer
  */
 public class Solution {
+
+    /**
+     * 逆序对个数
+     * 利用归并排序求解
+     * 序列(4,3,2)逆序对有(4,3)，(4,2)，(3,2)共3个
+     * @param nums
+     * @return
+     */
+    @TypeInts({4,3,2})
+    public int reversePairs0(int[] nums){
+        return reversePairs0Helper(nums, 0, nums.length-1);
+    }
+
+    private int reversePairs0Helper(int[] nums, int low, int high) {
+        if (low >= high)    return 0;
+        int mid = (low + high) / 2;
+        return reversePairs0Helper(nums, low, mid) + reversePairs0Helper(nums, mid+1, high) + reversePairs0Merge(nums, low, mid, high);
+    }
+
+    /**
+     * 归并排序合并两个有序的数组
+     * @param nums
+     * @param low
+     * @param mid
+     * @param high
+     * @return
+     */
+    private int reversePairs0Merge(int[] nums, int low, int mid, int high) {
+        int tmp[] = new int[high-low+1];
+        int i = low, j = mid + 1, k = 0;
+        int count = 0;
+
+        while (i <= mid && j <= high){
+            if(nums[i] <= nums[j]){
+                tmp[k++] = nums[i++];
+            }else {
+                tmp[k++] = nums[j++];
+                // 左序列元素a[i] > a[j], 则左序列第i - mid（共mid-i+1个）元素与a[j]均可组成逆序对
+                count += mid - i + 1;
+            }
+        }
+
+        while (i <= mid)    tmp[k++] = nums[i++];
+        while(j <= high)    tmp[k++] = nums[j++];
+
+        for(int p=0; p<tmp.length; p++)    nums[low+p] = tmp[p];
+
+        return count;
+    }
+
     /**
      * 4. Median of Two Sorted Arrays
      * todo
