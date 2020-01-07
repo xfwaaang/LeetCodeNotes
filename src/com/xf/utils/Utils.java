@@ -1,17 +1,30 @@
 package com.xf.utils;
 
+import java.util.Arrays;
+
 /**
  * @author xfwaaang
  * @create 2019-09-05 17:00
  */
 public class Utils {
-    public static <T> void println(T t){
-        System.out.println(t);
+    public static void println(Object obj){
+        System.out.println(toString(obj));
     }
 
-    public static <T> void print(T t){
-        System.out.print(t);
+    /**
+     * 将（数组）对象转成字符串
+     * @param obj
+     * @return
+     */
+    public static String toString(Object obj){
+        String res;
+        if (obj instanceof int[]){
+            res = Arrays.toString((int[])obj);
+        }else if (obj instanceof String[]){
+            res = Arrays.toString((String[])obj);
+        }else {
+            res = obj.toString();
+        }
+        return res;
     }
-
-
 }

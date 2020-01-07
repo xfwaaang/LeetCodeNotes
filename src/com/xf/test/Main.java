@@ -15,6 +15,7 @@ import java.util.List;
  * @create 2019-09-06 14:44
  *
  * 利用注解测试solution
+ * 可重复注解需要定义一个注解容器，如：TypeIntC.class
  * 可重复注解：同一类型的注解有多个则类型为注解对应得注解容器，同一类型的注解只有一个则类型为注解本身
  * 使用时，需按照 TypeInt, TypeInts, TypeString, TypeStrings 的顺序放置
  */
@@ -30,11 +31,11 @@ public class Main {
 
 
         try {
-//            test(slt_bit);
+            test(slt_bit);
 //            test(slt_exam);
 //            test(slt_dac);
 //            test(slt_sma);
-            test(slt_ptr);
+//            test(slt_ptr);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,26 +73,18 @@ public class Main {
             StringBuilder paramTypeStr = new StringBuilder();
             Type[] paramTypes = method.getGenericParameterTypes();
             for (int i = 0; i < paramTypes.length; i++) {
-                if (i == 0)  paramTypeStr.append(paramTypes[i].getTypeName());
-                else    paramTypeStr.append(", ").append(paramTypes[i].getTypeName());
+                if (i == 0){
+                    paramTypeStr.append(paramTypes[i].getTypeName());
+                }else{
+                    paramTypeStr.append(", ").append(paramTypes[i].getTypeName());
+                }
             }
 
             //获取函数实参值的字符串表示
             StringBuilder argsStr = new StringBuilder();
-            StringBuilder argStr;
+            String argStr;
             for (int i = 0; i < args.size(); i++) {
-                argStr = new StringBuilder();
-                Object arg = args.get(i);
-                if (arg instanceof Integer){
-                    argStr.append(args.get(0));
-                }else if (arg instanceof int[]){
-                    argStr.append(Arrays.toString((int[])arg));
-                }else if (arg instanceof String){
-                    argStr.append(arg);
-                }else if (arg instanceof String[]){
-                    argStr.append(Arrays.toString((String[])arg));
-                }
-
+                argStr = Utils.toString(args.get(i));
                 if (i == 0){
                     argsStr.append(argStr);
                 }else {
@@ -101,14 +94,7 @@ public class Main {
 
             //获取函数返回值的字符串表示
             Object res = method.invoke(obj, args.toArray());
-            String resStr;
-            if(res instanceof int[]){
-                resStr = Arrays.toString((int[])res);
-            }else if (res instanceof String[]){
-                resStr = Arrays.toString((String[])res);
-            }else {
-                resStr = res.toString();
-            }
+            String resStr = Utils.toString(res);
 
             Utils.println("method: " + method.getName() + "(" + paramTypeStr.toString() + ")");
             Utils.println("args: " + argsStr.toString());
