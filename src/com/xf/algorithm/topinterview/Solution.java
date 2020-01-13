@@ -1,9 +1,8 @@
 package com.xf.algorithm.topinterview;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import com.xf.test.*;
+
+import java.util.*;
 
 /**
  * @author xfwaaang
@@ -11,10 +10,17 @@ import java.util.Stack;
  * Top Interview Questions
  * 1. 最长无重复子串长度   3. Longest Substring Without Repeating Characters
  * 2. 最长回文子串    5. Longest Palindromic Substring
+ * 3. 反转整数      7. Reverse Integer
+ * 4. 字符串转整数    8. String to Integer (atoi)
+ * 5.       11. Container With Most Water
  */
 public class Solution {
     public static void main(String[] args){
-
+        try {
+            Test.test(new Solution());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -45,6 +51,7 @@ public class Solution {
      * @param s
      * @return
      */
+    @TypeString("abcabcbb")
     public int lengthOfLongestSubstring(String s) {
         int n = s.length();
 
@@ -116,11 +123,14 @@ public class Solution {
      * Input: 120
      * Output: 21
      * Note:
-     * Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: [−231,  231 − 1]. For the purpose of this problem, assume that your function returns 0 when the reversed integer overflows.
+     * Assume we are dealing with an environment which could only store integers within the 32-bit signed
+     * integer range: [−231,  231 − 1]. For the purpose of this problem, assume that
+     * your function returns 0 when the reversed integer overflows.
      * pass  100%  8%
      * @param x
      * @return
      */
+    @TypeInt(-2314)
     public int reverse(int x) {
         long ret = 0;
         while(x != 0){
@@ -313,61 +323,37 @@ public class Solution {
      *   [-1, 0, 1],
      *   [-1, -1, 2]
      * ]
-     * todo
+     * 30%  80%
      * @param nums
      * @return
      */
+    @TypeInts({3,0,-2,-1,1,2})
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> ret = new ArrayList<>();
-        int i = 0, j = nums.length-1;
+        int i, j;
         Arrays.sort(nums);
-        while(i < j - 1){
-            System.out.println(i + " " + j);
-            int sum = nums[i] + nums[j];
-
-            int p = i + 1, q = j - 1;
-            while(p <= q){
-                int m = (p + q) / 2;
-                if(nums[m] > -sum){
-                    q = m - 1;
-                }else if(nums[m] < -sum){
-                    p = m + 1;
-                }else{
-                    break;
-                }
-            }
-            if(p <= q){
-                List<Integer> list = new ArrayList<>();
-                list.add(nums[i]);
-                list.add(nums[j]);
-                list.add(-sum);
-                ret.add(list);
-            }
-
-            if(sum > 0){
-                j--;
-            }else if(sum < 0){
-                i++;
-            }else{
-                while(i < j && nums[i+1] == nums[i])    i++;
-                if(i+2 < j){
-                    if(nums[i] + nums[j-2] + nums[j-1] == 0){
-                        List<Integer> list = new ArrayList<>();
-                        list.add(nums[i]);
-                        list.add(nums[j-2]);
-                        list.add(nums[j-1]);
-                        ret.add(list);
-                        i++;
+        Set<List<Integer>> set = new HashSet<>();
+        for(int k=1; k<nums.length-1; k++)
+        {
+            i = 0;
+            j = nums.length - 1;
+            while(i < k && j > k){
+                int sum = nums[i] + nums[j];
+                if(-sum > nums[k]){
+                    i++;
+                }else if(-sum < nums[k]){
+                    j--;
+                }else
+                {
+                    List<Integer> temp = new ArrayList<>();
+                    temp.add(nums[i]);
+                    temp.add(-sum);
+                    temp.add(nums[j]);
+                    if(!set.contains(temp))
+                    {
+                        ret.add(temp);
+                        set.add(temp);
                     }
-                    if(nums[j] + nums[i+2] + nums[i+1] == 0){
-                        List<Integer> list = new ArrayList<>();
-                        list.add(nums[j]);
-                        list.add(nums[i+2]);
-                        list.add(nums[i+1]);
-                        ret.add(list);
-                        j--;
-                    }
-                }else {
                     i++;
                     j--;
                 }
@@ -389,6 +375,7 @@ public class Solution {
      * @return
      */
     String[] strs = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    @TypeString("23")
     public List<String> letterCombinations(String digits) {
         if(digits.length() == 0)    return new ArrayList<>();
 

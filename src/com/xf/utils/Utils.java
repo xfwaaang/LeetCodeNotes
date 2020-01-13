@@ -17,6 +17,8 @@ public class Utils {
      * @return
      */
     public static String toString(Object obj){
+        if(obj == null)    return "";
+
         String res;
         if (obj instanceof int[]){
             res = Arrays.toString((int[])obj);

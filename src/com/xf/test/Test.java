@@ -19,7 +19,7 @@ import java.util.List;
  * 可重复注解：同一类型的注解有多个则类型为注解对应得注解容器，同一类型的注解只有一个则类型为注解本身
  * 使用时，需按照 TypeInt, TypeInts, TypeString, TypeStrings 的顺序放置
  */
-public class Main {
+public class Test {
     public static void main(String[] args){
         Utils.println("############ Test start ################");
 
