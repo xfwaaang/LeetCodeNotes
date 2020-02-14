@@ -64,6 +64,7 @@ public class PermuteAndCombine {
 
     /**
      * 全排列
+     * 待排列数组无重复
      * @param nums 待排列数组
      * @return
      */
