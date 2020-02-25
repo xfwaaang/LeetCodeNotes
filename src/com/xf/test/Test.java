@@ -46,7 +46,6 @@ public class Test {
 
     /**
      * 使用可重复注解（注解容器）
-     * 相同类型的注解需要相邻放置
      * @param obj
      * @throws Exception
      */
@@ -58,16 +57,28 @@ public class Test {
 
             //获取函数实参值
             List<Object> args = new ArrayList<>();
-
-            TypeInt[] typeIntArr = method.getAnnotationsByType(TypeInt.class);
-            TypeInts[] typeIntsArr = method.getAnnotationsByType(TypeInts.class);
-            TypeString[] typeStringArr = method.getAnnotationsByType(TypeString.class);
-            TypeStrings[] typeStringsArr = method.getAnnotationsByType(TypeStrings.class);
-
-            for (TypeInt typeInt : typeIntArr)    args.add(typeInt.value());
-            for (TypeInts typeInts : typeIntsArr)    args.add(typeInts.value());
-            for (TypeString typeString : typeStringArr)    args.add(typeString.value());
-            for (TypeStrings typeStrings : typeStringsArr)    args.add(typeStrings.value());
+            Annotation annos[] = method.getDeclaredAnnotations();
+            for(Annotation anno : annos){
+                String annoName = anno.annotationType().getName();
+                annoName = annoName.substring(annoName.lastIndexOf(".") + 1);
+                Object arg = null;
+                switch (annoName){
+                    case "TypeInt":
+                        arg = ((TypeInt)anno).value();
+                        break;
+                    case "TypeInts":
+                        arg = ((TypeInts)anno).value();
+                        break;
+                    case "TypeString":
+                        arg = ((TypeString)anno).value();
+                        break;
+                    case "TypeStrings":
+                        arg = ((TypeStrings)anno).value();
+                        break;
+                }
+                if(arg == null)     continue;
+                args.add(arg);
+            }
 
             //获取函数形参类型，并转为字符串
             StringBuilder paramTypeStr = new StringBuilder();
