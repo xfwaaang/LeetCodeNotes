@@ -17,7 +17,6 @@ import java.util.List;
  * 利用注解测试solution
  * 可重复注解需要定义一个注解容器，如：TypeIntC.class
  * 可重复注解：同一类型的注解有多个则类型为注解对应得注解容器，同一类型的注解只有一个则类型为注解本身
- * 使用时，需按照 TypeInt, TypeInts, TypeString, TypeStrings 的顺序放置
  */
 public class Test {
     public static void main(String[] args){
@@ -46,6 +45,7 @@ public class Test {
 
     /**
      * 使用可重复注解（注解容器）
+     * 相同类型的注解需要相邻放置
      * @param obj
      * @throws Exception
      */
@@ -57,27 +57,46 @@ public class Test {
 
             //获取函数实参值
             List<Object> args = new ArrayList<>();
+
             Annotation annos[] = method.getDeclaredAnnotations();
             for(Annotation anno : annos){
                 String annoName = anno.annotationType().getName();
                 annoName = annoName.substring(annoName.lastIndexOf(".") + 1);
-                Object arg = null;
                 switch (annoName){
                     case "TypeInt":
-                        arg = ((TypeInt)anno).value();
+                        args.add(((TypeInt)anno).value());
                         break;
                     case "TypeInts":
-                        arg = ((TypeInts)anno).value();
+                        args.add(((TypeInts)anno).value());
                         break;
                     case "TypeString":
-                        arg = ((TypeString)anno).value();
+                        args.add(((TypeString)anno).value());
                         break;
                     case "TypeStrings":
-                        arg = ((TypeStrings)anno).value();
+                        args.add(((TypeStrings)anno).value());
+                        break;
+                    case "TypeIntC":
+                        for (TypeInt typeInt : ((TypeIntC) anno).value()) {
+                            args.add(typeInt.value());
+                        }
+                        break;
+                    case "TypeIntsC":
+                        for (TypeInts typeInts : ((TypeIntsC) anno).value()) {
+                            args.add(typeInts.value());
+                        }
+                        break;
+                    case "TypeStringC":
+                        for (TypeString typeString : ((TypeStringC) anno).value()) {
+                            args.add(typeString.value());
+                        }
+                        break;
+                    case "TypeStringsC":
+                        for (TypeStrings typeStrings : ((TypeStringsC) anno).value()) {
+                            args.add(typeStrings.value());
+                        }
                         break;
                 }
-                if(arg == null)     continue;
-                args.add(arg);
+
             }
 
             //获取函数形参类型，并转为字符串
@@ -115,62 +134,6 @@ public class Test {
         Utils.println("--- Test " + obj.getClass().getName() + " finished ---");
     }
 
-    private static void test1(Object obj) throws Exception {
-        Utils.println("--- Test " + obj.getClass().getName() + " start---");
-        for (Method method : obj.getClass().getDeclaredMethods()) {
-            Annotation[] annos = method.getDeclaredAnnotations();
-            if (annos.length == 0)  continue;
 
-            String method_name = method.getName() + "(";
-            String args_str = "";
-
-            Utils.println(annos[0].annotationType());
-
-            Object[] args = new Object[annos.length];
-            for (int i = 0; i < annos.length; i++) {
-                String type = "";
-                String arg = "";
-                if(annos[i].annotationType() == TypeInt.class)  {
-                    args[i] = ((TypeInt)annos[i]).value();
-                    type = "int";
-                    arg =  "" + args[i];
-                }
-                if(annos[i].annotationType() == TypeInts.class)  {
-                    args[i] = ((TypeInts)annos[i]).value();
-                    type = "int[]";
-                    arg = Arrays.toString((int[])args[i]);
-                }
-                if(annos[i].annotationType() == TypeString.class)  {
-                    args[i] = ((TypeString)annos[i]).value();
-                    type = "String";
-                    arg = "" + args[i];
-                }
-                if(annos[i].annotationType() == TypeStrings.class)  {
-                    args[i] = ((TypeStrings)annos[i]).value();
-                    type = "String[]";
-                    arg = "[";
-                    for (int i1 = 0; i1 < ((String[]) args[i]).length; i1++) {
-                        if(i1 == 0)    arg += ((String[]) args[i])[i1];
-                        else   arg += ", " + ((String[]) args[i])[i1];
-                    }
-                    arg += "]";
-                }
-                if(i == 0){
-                    method_name += type;
-                    args_str += arg;
-                }else{
-                    method_name += ", " + type;
-                    args_str += ", " + arg;
-                }
-            }
-
-
-            Utils.println("method: " + method_name + ")");
-            Utils.println("args: " + args_str);
-            Utils.println("result: \n" + method.invoke(obj, args));
-        }
-
-        Utils.println("--- Test " + obj.getClass().getName() + " finished ---");
-    }
 
 }
